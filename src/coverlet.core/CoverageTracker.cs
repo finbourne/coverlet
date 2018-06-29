@@ -29,7 +29,8 @@ namespace Coverlet.Core
                 _markers.TryAdd(path, new List<string>());
                 _markers[path].Add(marker);
                 _markerFileCount.TryAdd(path, 0);
-                if (_markers[path].Count >= 100000)
+                // Modified from 100000 in order to ensure all files are written in CurrentDomain_ProcessExit
+                if (_markers[path].Count >= 10000)
                 {
                     using (var fs = new FileStream($"{path}_compressed_{_markerFileCount[path]}", FileMode.OpenOrCreate))
                     using (var gz = new GZipStream(fs, CompressionMode.Compress))
